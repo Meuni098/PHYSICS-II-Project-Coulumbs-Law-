@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Coulombic Field & Vector Analyst</title>
+    <meta name="description" content="A high-precision physics sandbox for visualizing electrostatic force arrows and field lines between charges using Coulomb's Law."/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="features-visible">
+    <!-- ═══════════════════ TOP HEADER BAR ═══════════════════ -->
+    <header id="topbar">
+        <div class="topbar-left">
+            <span class="material-symbols-outlined topbar-icon" style="font-variation-settings:'FILL' 1;">insights</span>
+            <div class="topbar-title-group">
+                <span class="topbar-title">Coulombic Field &amp; Vector Analyst</span>
+                <span class="topbar-version">v2.0</span>
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <button id="btnToggleFeatures" class="btn-features-toggle active" title="Toggle Features Panel">
+                <span class="material-symbols-outlined">tune</span>
+                Features
+            </button>
+            <button id="btnThemeToggle" class="btn-icon" title="Toggle Theme">
+                <span class="material-symbols-outlined theme-icon">dark_mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ═══════════════════ LEFT FEATURES PANEL ═══════════════════ -->
+    <aside id="featuresPanel" class="features-panel">
+        <div class="features-panel-header">
+            <div class="features-panel-title-group">
+                <span class="material-symbols-outlined features-panel-icon">tune</span>
+                <h2 class="features-panel-title">Controls</h2>
+            </div>
+            <button id="btnCloseFeatures" class="btn-close-features" title="Close Panel">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Section: Add Charges -->
+        <div class="features-section">
+            <p class="features-section-label"><span class="label-accent"></span>Charge Tools</p>
+            <div class="features-section-body features-charge-btns">
+                <button id="btnAddPositive" class="btn-charge btn-positive" title="Add Positive Charge">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    + Charge
+                </button>
+                <button id="btnAddNegative" class="btn-charge btn-negative" title="Add Negative Charge">
+                    <span class="material-symbols-outlined">remove_circle</span>
+                    − Charge
+                </button>
+            </div>
+        </div>
+
+        <!-- Section: Magnitude -->
+        <div class="features-section">
+            <p class="features-section-label"><span class="label-accent"></span>Magnitude</p>
+            <div class="features-section-body">
+                <div class="magnitude-control magnitude-control--vertical">
+                    <input type="range" id="chargeSlider" class="mag-slider" min="0.1" max="50" step="0.1" value="5"/>
+                    <div class="mag-input-row">
+                        <input type="number" id="chargeInput" class="mag-input" value="5" min="0.1" max="100" step="0.1"/>
+                        <span class="mag-unit">μC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Presets -->
+        <div class="features-section">
+            <p class="features-section-label"><span class="label-accent"></span>Presets</p>
+            <div class="features-section-body features-presets">
+                <button id="btnAtomic" class="btn-atomic" title="Atomic scale: e = 1.602×10⁻¹⁹ C">
+                    <span class="material-symbols-outlined">science</span>
+                    Atomic
+                </button>
+                <button id="btnReset" class="btn-ghost" title="Reset All">
+                    <span class="material-symbols-outlined">refresh</span>
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Section: View Toggles -->
+        <div class="features-section">
+            <p class="features-section-label"><span class="label-accent"></span>View Options</p>
+            <div class="features-section-body features-toggles">
+                <div class="toggle-group-row" title="Toggle Force Arrows">
+                    <span class="toggle-label">Force Arrows</span>
+                    <label class="toggle-switch" id="toggleForceArrows">
+                        <input type="checkbox" checked/>
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                    </label>
+                </div>
+                <div class="toggle-group-row" title="Toggle Scientific Notation">
+                    <span class="toggle-label">Sci Notation</span>
+                    <label class="toggle-switch" id="toggleSciNotation">
+                        <input type="checkbox" checked/>
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                    </label>
+                </div>
+                <div class="toggle-group-row" title="Toggle Physics Panel">
+                    <span class="toggle-label">Physics Panel</span>
+                    <label class="toggle-switch" id="togglePhysicsPanel">
+                        <input type="checkbox" checked/>
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                    </label>
+                </div>
+                <div class="toggle-group-row" title="Toggle Data Table">
+                    <span class="toggle-label">Data Table</span>
+                    <label class="toggle-switch" id="toggleDataTable">
+                        <input type="checkbox" checked/>
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════ MAIN CANVAS ═══════════════════ -->
+    <main id="canvasWrapper">
+        <canvas id="simulationCanvas"></canvas>
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <span class="material-symbols-outlined empty-icon">blur_on</span>
+            <p class="empty-title">Mag-drag ng mga charge papunta sa canvas</p>
+            <p class="empty-subtitle">I-click ang "+ Charge" o "− Charge" sa toolbar sa itaas</p>
+        </div>
+        <div class="canvas-info">
+            <span class="canvas-info-item">
+                <span class="material-symbols-outlined">grid_4x4</span>
+                Resolution: 32px/div
+            </span>
+            <span class="canvas-info-item">
+                <span class="material-symbols-outlined">near_me</span>
+                <span id="canvasOffset">Offset: 0, 0</span>
+            </span>
+        </div>
+        <!-- Save Reading button floating on canvas -->
+        <button id="btnSaveReading" class="btn-save-reading" title="Save current readings to data log">
+            <span class="material-symbols-outlined">bookmark_add</span>
+            Save This Reading
+        </button>
+    </main>
+
+    <!-- ═══════════════════ RIGHT SIDEBAR — PHYSICS PANEL ═══════════════════ -->
+    <aside id="physicsPanel">
+        <div class="panel-header">
+            <div class="panel-header-icon">
+                <span class="material-symbols-outlined">analytics</span>
+            </div>
+            <div>
+                <h2 class="panel-title">Vector Analyst</h2>
+                <p class="panel-subtitle">PRECISION TELEMETRY</p>
+            </div>
+        </div>
+
+        <!-- Charge Cards (with delete buttons) -->
+        <div id="chargeCardsContainer" class="charge-cards">
+            <div class="charge-card charge-card--empty">
+                <p>Walang charge. Mag-add para magsimula.</p>
+            </div>
+        </div>
+
+        <!-- Computed Telemetry -->
+        <div class="telemetry-section">
+            <p class="section-label"><span class="label-accent"></span>Computed Telemetry</p>
+            <div class="telemetry-grid">
+                <div class="telemetry-row">
+                    <span class="telemetry-label">Separation (r)</span>
+                    <span class="telemetry-value" id="valSeparation">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span class="telemetry-label">Force (F)</span>
+                    <span class="telemetry-value telemetry-value--accent" id="valForce">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span class="telemetry-label">Direction</span>
+                    <span class="telemetry-value" id="valDirection">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span class="telemetry-label">Potential E</span>
+                    <span class="telemetry-value" id="valPotential">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span class="telemetry-label">Interaction</span>
+                    <span class="telemetry-value" id="valInteraction">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coulomb's Law Formula -->
+        <div class="formula-block">
+            <span class="formula-label">Coulomb's Law</span>
+            <div class="formula-main">F = k · |q<sub>1</sub>q<sub>2</sub>| / r<sup>2</sup></div>
+            <p class="formula-constant">k ≈ 8.9875 × 10<sup>9</sup> N·m<sup>2</sup>/C<sup>2</sup></p>
+        </div>
+
+        <!-- Export Button -->
+        <button id="btnExportData" class="btn-export">Export Data</button>
+    </aside>
+
+    <!-- ═══════════════════ BOTTOM PANELS ═══════════════════ -->
+    <footer id="bottomPanels">
+        <!-- Data Log (Left) -->
+        <div class="bottom-panel data-log-panel">
+            <div class="bottom-panel-header">
+                <div class="bottom-panel-title-group">
+                    <span class="material-symbols-outlined">list_alt</span>
+                    <h3 class="bottom-panel-title">Data Log</h3>
+                </div>
+                <div class="bottom-panel-actions">
+                    <span class="entry-count" id="entryCount">0 Entries</span>
+                    <button id="btnClearLog" class="btn-small-icon" title="Clear Log">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            </div>
+            <div class="table-scroll custom-scrollbar">
+                <table id="dataLogTable">
+                    <thead>
+                        <tr>
+                            <th class="col-num">#</th>
+                            <th class="col-pair">Pair</th>
+                            <th class="col-q1">q₁ (C)</th>
+                            <th class="col-q2">q₂ (C)</th>
+                            <th class="col-r">r (m)</th>
+                            <th class="col-f">F (N)</th>
+                            <th class="col-type">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataLogBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- F vs r Graph (Right) -->
+        <div class="bottom-panel graph-panel">
+            <div class="bottom-panel-header">
+                <div class="bottom-panel-title-group">
+                    <span class="material-symbols-outlined">show_chart</span>
+                    <h3 class="bottom-panel-title">F vs r Graph</h3>
+                </div>
+                <div class="graph-legend">
+                    <span class="legend-item"><span class="legend-dash"></span>Theoretical</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--attract"></span>Attract</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--repel"></span>Repel</span>
+                </div>
+            </div>
+            <div class="graph-container">
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════ SOLUTION OVERLAY ═══════════════════ -->
+    <div id="solutionOverlay" class="solution-overlay" style="display:none;">
+        <div class="solution-modal">
+            <div class="solution-modal-header">
+                <div class="solution-modal-title-group">
+                    <span class="material-symbols-outlined solution-modal-icon">calculate</span>
+                    <div>
+                        <h2 class="solution-modal-title">Complete Solution</h2>
+                        <p class="solution-modal-subtitle">STEP-BY-STEP COMPUTATION</p>
+                    </div>
+                </div>
+                <button id="btnCloseSolution" class="btn-close-solution" title="Close Solution">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="solutionContent" class="solution-content custom-scrollbar">
+                <!-- Dynamically filled -->
+            </div>
+            <div class="solution-modal-footer">
+                <button id="btnCloseSolutionBottom" class="btn-solution-close-bottom">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ BACKGROUND DECORATION ═══════════════════ -->
+    <div class="bg-decoration">
+        <div class="bg-blob bg-blob--violet"></div>
+        <div class="bg-blob bg-blob--blue"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
