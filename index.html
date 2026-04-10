@@ -9,7 +9,119 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="style.css"/>
 </head>
-<body class="features-visible">
+<body class="features-visible frontpage-active">
+    <section id="landingFront" class="landing-front" aria-label="Welcome front page">
+        <div class="landing-backdrop-grid"></div>
+        <div class="landing-orb landing-orb--amber"></div>
+        <div class="landing-orb landing-orb--cyan"></div>
+
+        <div class="landing-shell">
+            <p class="landing-kicker">Open Access Physics Studio</p>
+            <h1 class="landing-title">Coulombic Field and Vector Analyst</h1>
+            <p class="landing-subtitle">A premium interactive environment for electrostatics simulations, precision telemetry, pair analytics, and export-ready reports. No sign in required.</p>
+
+            <div class="landing-preview" aria-hidden="true">
+                <div class="landing-preview-frame">
+                    <div class="landing-preview-grid"></div>
+                    <div class="landing-preview-link"></div>
+                    <div class="landing-preview-distance">r = 0.500 m</div>
+                    <div class="landing-charge landing-charge--pos">
+                        <span>+</span>
+                        <small>q1</small>
+                    </div>
+                    <div class="landing-charge landing-charge--neg">
+                        <span>-</span>
+                        <small>q2</small>
+                    </div>
+                    <div class="landing-arrow landing-arrow--pos"></div>
+                    <div class="landing-arrow landing-arrow--neg"></div>
+                </div>
+            </div>
+
+            <div class="landing-cta-row">
+                <button id="btnEnterLab" class="landing-btn landing-btn--primary">
+                    <span class="material-symbols-outlined">rocket_launch</span>
+                    Enter Simulation Lab
+                </button>
+            </div>
+
+            <div id="landingFeatureStrip" class="landing-feature-strip">
+                <article class="landing-feature-card">
+                    <p class="landing-feature-label">Precision Canvas</p>
+                    <p class="landing-feature-copy">Drag, lock, and compare charge pairs with real-time vector behavior.</p>
+                </article>
+                <article class="landing-feature-card">
+                    <p class="landing-feature-label">Telemetry + Graphs</p>
+                    <p class="landing-feature-copy">Track force, potential energy, direction, and F-vs-r trends instantly.</p>
+                </article>
+                <article class="landing-feature-card">
+                    <p class="landing-feature-label">Premium Exports</p>
+                    <p class="landing-feature-copy">Generate polished PDF reports with equations and simulation snapshots.</p>
+                </article>
+            </div>
+
+            <section class="landing-group-card" aria-label="Group project details">
+                <div class="landing-group-head">
+                    <p class="landing-group-kicker">Group Project</p>
+                    <span class="landing-group-badge">CARS</span>
+                </div>
+                <h3 class="landing-group-name">CARS</h3>
+                <p class="landing-group-sub">CARS comes from the surnames Cruz, Autor, Repana, and San Jose.</p>
+                <p class="landing-group-course">Course: BSM CS 2A</p>
+
+                <div class="landing-group-roster">
+                    <article class="landing-member-card">
+                        <span class="landing-member-role">Leader</span>
+                        <p class="landing-member-name">Laurice Ann DC. San Jose</p>
+                    </article>
+                    <article class="landing-member-card">
+                        <span class="landing-member-role">App Developer</span>
+                        <p class="landing-member-name">Eunice Angeline Y. Cruz</p>
+                    </article>
+                    <article class="landing-member-card">
+                        <span class="landing-member-role">Member</span>
+                        <p class="landing-member-name">Kristian Clint Autor</p>
+                    </article>
+                    <article class="landing-member-card">
+                        <span class="landing-member-role">Member</span>
+                        <p class="landing-member-name">Jellian Repana</p>
+                    </article>
+                </div>
+            </section>
+
+        </div>
+    </section>
+
+    <div id="coachTourOverlay" class="coach-tour-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="coachTourTitle">
+        <div id="coachTourSpotlight" class="coach-tour-spotlight"></div>
+        <div id="coachTourMouse" class="coach-tour-mouse" aria-hidden="true">
+            <span class="material-symbols-outlined">arrow_selector_tool</span>
+        </div>
+        <div id="coachTourCard" class="coach-tour-card">
+            <p id="coachTourProgress" class="coach-tour-progress">Step 1 of 6</p>
+            <h3 id="coachTourTitle" class="coach-tour-title">Tutorial Title</h3>
+            <p id="coachTourBody" class="coach-tour-body">Tutorial body text.</p>
+            <ul id="coachTourChecklist" class="coach-tour-list"></ul>
+            <div class="coach-tour-actions">
+                <button id="btnCoachPrev" class="landing-btn landing-btn--ghost" type="button">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                    Back
+                </button>
+                <button id="btnCoachSkip" class="landing-btn landing-btn--ghost" type="button">
+                    Skip
+                </button>
+                <button id="btnCoachNext" class="landing-btn landing-btn--primary" type="button">
+                    Next
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+                <button id="btnCoachFinish" class="landing-btn landing-btn--primary" type="button" style="display:none;">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    Finish
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ═══════════════════ TOP HEADER BAR ═══════════════════ -->
     <header id="topbar">
         <div class="topbar-left">
@@ -24,6 +136,10 @@
             <button id="btnToggleFeatures" class="btn-features-toggle active" title="Toggle Features Panel">
                 <span class="material-symbols-outlined">tune</span>
                 Features
+            </button>
+            <button id="btnMainTutorial" class="btn-tutorial-main" title="Open Tutorial">
+                <span class="material-symbols-outlined">school</span>
+                Tutorial
             </button>
             <button id="btnThemeToggle" class="btn-icon" title="Toggle Theme">
                 <span class="material-symbols-outlined theme-icon">dark_mode</span>
@@ -65,7 +181,7 @@
                 <div class="magnitude-control magnitude-control--vertical">
                     <input type="range" id="chargeSlider" class="mag-slider" min="0.1" max="50" step="0.1" value="5"/>
                     <div class="mag-input-row">
-                        <input type="number" id="chargeInput" class="mag-input" value="5" min="0.1" max="100" step="0.1"/>
+                        <input type="number" id="chargeInput" class="mag-input" value="5" min="0.000000000001" step="0.1"/>
                         <span class="mag-unit">μC</span>
                     </div>
                 </div>
@@ -192,17 +308,29 @@
                     <span class="telemetry-value" id="valInteraction">—</span>
                 </div>
             </div>
+            <button id="btnUnlockPair" class="btn-unlock-pair" title="Return to automatic closest-pair mode">
+                <span class="material-symbols-outlined">link_off</span>
+                Unlock Pair (Auto)
+            </button>
         </div>
 
         <!-- Coulomb's Law Formula -->
         <div class="formula-block">
             <span class="formula-label">Coulomb's Law</span>
-            <div class="formula-main">F = k · |q<sub>1</sub>q<sub>2</sub>| / r<sup>2</sup></div>
+            <div class="formula-main formula-main--equation" aria-label="F equals k times the absolute value of q1 q2 over r squared">
+                <span class="formula-eq-left">F</span>
+                <span class="formula-eq-equals">=</span>
+                <span class="formula-eq-right">
+                    <span class="formula-eq-k">k</span>
+                    <span class="formula-fraction">
+                        <span class="formula-fraction-top">|q<sub>1</sub>q<sub>2</sub>|</span>
+                        <span class="formula-fraction-bar"></span>
+                        <span class="formula-fraction-bottom">r<sup>2</sup></span>
+                    </span>
+                </span>
+            </div>
             <p class="formula-constant">k ≈ 8.9875 × 10<sup>9</sup> N·m<sup>2</sup>/C<sup>2</sup></p>
         </div>
-
-        <!-- Export Button -->
-        <button id="btnExportData" class="btn-export">Export Data</button>
     </aside>
 
     <!-- ═══════════════════ BOTTOM PANELS ═══════════════════ -->
@@ -277,6 +405,10 @@
                 <!-- Dynamically filled -->
             </div>
             <div class="solution-modal-footer">
+                <button id="btnExportSolutionPdf" class="btn-solution-export">
+                    <span class="material-symbols-outlined">picture_as_pdf</span>
+                    Export PDF
+                </button>
                 <button id="btnCloseSolutionBottom" class="btn-solution-close-bottom">
                     <span class="material-symbols-outlined">check_circle</span>
                     Done
@@ -285,12 +417,108 @@
         </div>
     </div>
 
+    <div id="exportPickerOverlay" class="solution-overlay" style="display:none;">
+        <div class="solution-modal export-picker-modal">
+            <div class="solution-modal-header">
+                <div class="solution-modal-title-group">
+                    <span class="material-symbols-outlined solution-modal-icon">checklist</span>
+                    <div>
+                        <h2 class="solution-modal-title">Select Readings To Export</h2>
+                        <p class="solution-modal-subtitle">CHOOSE TWO OR MORE IF AVAILABLE</p>
+                    </div>
+                </div>
+                <button id="btnCloseExportPicker" class="btn-close-solution" title="Close Export Picker">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="solution-content custom-scrollbar export-picker-content">
+                <p class="export-picker-note">Select the saved readings you want to include in the PDF. The exported report will include full equations and explanations for every selected reading.</p>
+                <p id="exportPickerError" class="export-picker-error" style="display:none;"></p>
+                <div id="exportReadingList" class="export-reading-list"></div>
+            </div>
+
+            <div class="solution-modal-footer">
+                <button id="btnCancelExportPicker" class="btn-solution-close-bottom">
+                    <span class="material-symbols-outlined">close</span>
+                    Cancel
+                </button>
+                <button id="btnConfirmExportReadings" class="btn-solution-export">
+                    <span class="material-symbols-outlined">picture_as_pdf</span>
+                    Export Selected
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exportProgressOverlay" class="export-progress-overlay" style="display:none;">
+        <div class="export-progress-card">
+            <span class="material-symbols-outlined export-progress-icon">progress_activity</span>
+            <p class="export-progress-title">Exporting...</p>
+            <p class="export-progress-subtitle">Preparing your PDF report</p>
+        </div>
+    </div>
+
+    <div id="exportDonePopup" class="export-done-popup" style="display:none;" role="status" aria-live="polite">
+        <span class="material-symbols-outlined export-done-icon">check_circle</span>
+        <p id="exportDoneText" class="export-done-text">Done Exporting</p>
+    </div>
+
     <!-- ═══════════════════ BACKGROUND DECORATION ═══════════════════ -->
     <div class="bg-decoration">
         <div class="bg-blob bg-blob--violet"></div>
         <div class="bg-blob bg-blob--blue"></div>
     </div>
 
+    <!-- ═══════════════════ FLOATING AI CHAT ═══════════════════ -->
+    <button id="aiFloatingLauncher" class="ai-floating-launcher" title="Open Physics Assistant (Guided)">
+        <span class="material-symbols-outlined">chat</span>
+        Physics Assistant
+    </button>
+
+    <section id="aiChatWidget" class="ai-chat-widget ai-chat-widget--hidden" aria-live="polite">
+        <div class="ai-chat-header">
+            <div class="ai-chat-title-group">
+                <span class="material-symbols-outlined">psychology</span>
+                <div>
+                    <p class="ai-chat-title">Physics Assistant (Guided)</p>
+                    <p id="aiStatus" class="ai-chat-status">Status: idle</p>
+                </div>
+            </div>
+            <button id="btnCloseAIChat" class="ai-chat-close" title="Close AI chat">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="aiResponse" class="ai-chat-messages">
+            <div class="ai-msg ai-msg--assistant">Pick an action below, then click Run. This panel now uses guided options only.</div>
+        </div>
+
+        <div class="ai-chat-input-wrap">
+            <div class="ai-picker-controls">
+                <select id="aiPresetSelect" class="ai-preset-select" title="Choose an AI action">
+                    <option value="summary-latest">Summarize latest simulation</option>
+                    <option value="summary-number">Summarize selected simulation</option>
+                    <option value="explain-focus">Explain current focused pair</option>
+                    <option value="quiz-generate">Generate quiz from focused pair</option>
+                    <option value="quiz-check" disabled>Check quiz answer</option>
+                </select>
+                <select id="aiSimulationSelect" class="ai-sim-input" title="Choose simulation" disabled>
+                    <option value="">Select simulation</option>
+                </select>
+                <input id="aiPromptInput" class="ai-chat-input ai-chat-input--hidden" type="text" inputmode="decimal" placeholder="Type your quiz answer in Newtons" aria-label="Quiz answer input" />
+            </div>
+            <button id="btnAskAI" class="ai-chat-send">
+                <span class="material-symbols-outlined">play_arrow</span>
+            </button>
+        </div>
+    </section>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
