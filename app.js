@@ -2054,10 +2054,6 @@
             }
 
             for (const item of entries) {
-                // Start a new page for each simulation entry
-                currentPage = makePage();
-                pageHost.appendChild(currentPage);
-                pages.push(currentPage);
 
                 const interaction = item.type === 'attract' ? 'Attraction' : 'Repulsion';
                 const potential = potentialEnergy(item.q1, item.q2, item.r);
@@ -2066,7 +2062,7 @@
                         <p style="margin:0; font-size:18px; font-weight:700;">Simulation #${item.num} (${item.pair})</p>
                     </div>
                 `);
-                currentPage.appendChild(simHeader);
+                ensureFitsOrNewPage(simHeader);
 
                 // Helper to render LaTeX as SVG using KaTeX (if available)
                 function renderMathSVG(latex) {
@@ -2085,7 +2081,7 @@
                         <span style="font-size:16px;">Given: </span><span style="font-size:16px;">${renderMathSVG(`q_1=${formatSciLatex(item.q1)}\\,\\mathrm{C},\; q_2=${formatSciLatex(item.q2)}\\,\\mathrm{C},\; r=${item.r.toFixed(4)}\\,\\mathrm{m}`)}</span>
                     </div>
                 `);
-                currentPage.appendChild(givenBlock);
+                ensureFitsOrNewPage(givenBlock);
 
                 const formulaBlock = makeBlock(`
                     <div style="margin:0 0 6px; padding:8px 10px; border:1px solid #eee; border-radius:8px;">
@@ -2093,14 +2089,14 @@
                         <div style="font-size:16px;">${renderMathSVG('U = k\\frac{q_1q_2}{r}')}</div>
                     </div>
                 `);
-                currentPage.appendChild(formulaBlock);
+                ensureFitsOrNewPage(formulaBlock);
 
                 const substitutionBlock = makeBlock(`
                     <div style="margin:0 0 6px; padding:8px 10px; border:1px solid #eee; border-radius:8px;">
                         <div style="font-size:16px;">${renderMathSVG(`F = (8.9875\\times10^9)\\frac{|(${formatSciLatex(item.q1)})(${formatSciLatex(item.q2)})|}{(${item.r.toFixed(4)})^2}`)}</div>
                     </div>
                 `);
-                currentPage.appendChild(substitutionBlock);
+                ensureFitsOrNewPage(substitutionBlock);
 
                 const resultBlock = makeBlock(`
                     <div style="margin:0 0 6px; padding:8px 10px; border:1px solid #eee; border-radius:8px;">
@@ -2108,14 +2104,14 @@
                         <div style="font-size:16px;">${renderMathSVG(`U = ${formatSciLatex(potential)}\\,\\mathrm{J}`)}</div>
                     </div>
                 `);
-                currentPage.appendChild(resultBlock);
+                ensureFitsOrNewPage(resultBlock);
 
                 const explanationBlock = makeBlock(`
                     <div style="margin:0 0 10px; padding:8px 10px; border:1px solid #eee; border-radius:8px;">
                         <span style="font-size:16px;">Explanation: ${interaction}. ${interaction === 'Attraction' ? 'Opposite signs pull toward each other, and potential energy is usually negative.' : 'Same signs push away from each other, and potential energy is usually positive.'}</span>
                     </div>
                 `);
-                currentPage.appendChild(explanationBlock);
+                ensureFitsOrNewPage(explanationBlock);
             }
 
             if (i !== selectedReadings.length - 1) {
@@ -2148,15 +2144,23 @@
             const margin = 24;
             const imgWidth = pageWidth - margin * 2;
 
-            for (let idx = 0; idx < pages.length; idx++) {
+            const totalPages = pages.length;
+            for (let idx = 0; idx < totalPages; idx++) {
                 const page = pages[idx];
+
+                // Yield to keep UI responsive and update progress
+                if (idx % 2 === 0) {
+                    await new Promise((resolve) => requestAnimationFrame(resolve));
+                }
+
                 const pageCanvas = await html2canvasApi(page, {
-                    scale: 2,
+                    scale: 1.5,
                     backgroundColor: '#ffffff',
                     useCORS: true,
                     logging: false,
                     windowWidth: PAGE_W,
                     windowHeight: PAGE_H,
+                    removeContainer: true,
                 });
 
                 if (!pageCanvas || pageCanvas.width < 10 || pageCanvas.height < 10) {
@@ -2164,10 +2168,13 @@
                 }
 
                 const imgHeight = (pageCanvas.height * imgWidth) / pageCanvas.width;
-                const imgData = pageCanvas.toDataURL('image/png');
+                const imgData = pageCanvas.toDataURL('image/jpeg', 0.92);
 
                 if (idx > 0) doc.addPage();
-                doc.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, undefined, 'FAST');
+                doc.addImage(imgData, 'JPEG', margin, margin, imgWidth, imgHeight, undefined, 'FAST');
+
+                // Clean up page DOM as we go to reduce memory pressure
+                page.remove();
             }
 
             doc.save(`coulomb-readings-${readingIds.length}-selected-${Date.now()}.pdf`);
